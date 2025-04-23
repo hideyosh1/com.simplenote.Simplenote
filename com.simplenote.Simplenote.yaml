@@ -1,25 +1,31 @@
 app-id: com.simplenote.Simplenote
 base: org.electronjs.Electron2.BaseApp
-base-version: '23.08'
+base-version: '24.08'
 runtime: org.freedesktop.Platform
-runtime-version: '23.08'
+runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
 separate-locales: false
 command: simplenote
 finish-args:
   - --env=GTK_PATH=/app/lib/gtkmodules
-  - --socket=x11
+  - --socket=wayland
+  - --socket=fallback-x11
   - --device=dri
   - --share=ipc
   - --share=network
   - --socket=cups
-  - --filesystem=xdg-config/Simplenote
   - --filesystem=xdg-documents
   - --filesystem=xdg-download
   - --talk-name=org.freedesktop.secrets
 modules:
+  - name: gtk-settings
+    buildsystem: simple
+    build-commands:
+      - install -Dm 644 gtk-settings.ini /app/etc/xdg/gtk-3.0/settings.ini
+    sources:
+      - type: file
+        path: gtk-settings.ini
 
-  - shared-modules/libsecret/libsecret.json
 
   - name: libcups
     make-args: [libs]
@@ -30,8 +36,8 @@ modules:
       - /include
     sources:
       - type: archive
-        url: https://github.com/OpenPrinting/cups/releases/download/v2.4.7/cups-2.4.7-source.tar.gz
-        sha256: dd54228dd903526428ce7e37961afaed230ad310788141da75cebaa08362cf6c
+        url: https://github.com/OpenPrinting/cups/releases/download/v2.4.12/cups-2.4.12-source.tar.gz
+        sha256: b1dde191a4ae2760c47220c82ca6155a28c382701e6c1a0159d1054990231d59
 
   - name: gtk-cups-backend
     buildsystem: meson
@@ -42,16 +48,8 @@ modules:
     sources:
       - type: git
         url: https://gitlab.gnome.org/GNOME/gtk.git
-        tag: 3.24.38
+        tag: 3.24.49
   
-  - name: gtk-settings
-    buildsystem: simple
-    build-commands:
-      - install -Dm 644 gtk-settings.ini /app/etc/xdg/gtk-3.0/settings.ini
-    sources:
-      - type: file
-        path: gtk-settings.ini
-
   - name: simplenote
     buildsystem: simple
     sources:
@@ -62,14 +60,14 @@ modules:
       - type: file
         path: com.simplenote.Simplenote.png
       - type: archive
-        url: https://github.com/Automattic/simplenote-electron/releases/download/v2.21.0/Simplenote-linux-2.21.0-arm64.tar.gz
-        sha256: 0a82f99b73061d7583ec9dfbd49f9133f7f79c061825bfef6836687fb9374d5e
+        url: https://github.com/Automattic/simplenote-electron/releases/download/v2.23.2/Simplenote-linux-2.23.2-arm64.tar.gz
+        sha256: 13681720aba26a63cd48f7299753d2cd39efdd0d391c3d85b04e5f352eb13e49        
         only-arches:
           - aarch64
         dest: main
       - type: archive
-        url: https://github.com/Automattic/simplenote-electron/releases/download/v2.21.0/Simplenote-linux-2.21.0-x64.tar.gz
-        sha256: e4e7482029628ce52c7a42a1cec9822785b7118aeb3f3ae4007d7da386dd1a3e
+        url: https://github.com/Automattic/simplenote-electron/releases/download/v2.23.2/Simplenote-linux-2.23.2-x64.tar.gz
+        sha256: e97cf21d33cd9e9603e39c6d001aaba7f7ec3fbb492b7688f3dbbeb6b4edde19
         only-arches:
           - x86_64
         dest: main
@@ -77,7 +75,7 @@ modules:
         dest-filename: simplenote.sh
         commands:
           - "export TMPDIR=\"$XDG_RUNTIME_DIR/app/$FLATPAK_ID\""
-          - "exec zypak-wrapper /app/Simplenote/simplenote \"$@\""
+          - "exec zypak-wrapper /app/Simplenote/simplenote --enable-features=UseOzonePlatform --ozone-platform-hint=auto  --enable-wayland-ime --wayland-text-input-version=3 \"$@\""
     build-commands:
       - mkdir -p /app/Simplenote
       - cp -ra main/* /app/Simplenote/

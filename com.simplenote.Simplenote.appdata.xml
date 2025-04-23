@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
   <id>com.simplenote.Simplenote</id>
-  
+
   <name>Simplenote</name>
   <summary>The simplest way to keep notes</summary>
   <url type="homepage">https://simplenote.com</url>
-  
+
   <developer_name>Automattic Inc.</developer_name>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0-only</project_license>
-  
+
   <content_rating type="oars-1.0">
     <content_attribute id="social-info">moderate</content_attribute>
   </content_rating>
@@ -19,7 +19,7 @@
     <control>keyboard</control>
     <control>touch</control>
   </recommends>
-  
+
   <description>
     <p>
       Simplenote allows you to keep your notes updated across all your devices.
@@ -29,7 +29,7 @@
       to preview and publish your notes in Markdown format.
     </p>
   </description>
-  
+
   <launchable type="desktop-id">com.simplenote.Simplenote.desktop</launchable>
   <screenshots>
     <screenshot type="default">
@@ -44,7 +44,8 @@
   </screenshots>
 
   <releases>
-    <release date="2021-10-18" version="2.21.0" /> 
+    <release date="2025-03-11" version="2.23.2" />
+    <release date="2021-10-18" version="2.21.0" />
     <release date="2021-10-04" version="2.20.0" />
     <release date="2021-09-21" version="2.19.1" />
     <release date="2021-09-20" version="2.19.0" />
