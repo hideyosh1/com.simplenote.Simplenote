@@ -7,6 +7,7 @@ sdk: org.freedesktop.Sdk
 separate-locales: false
 command: simplenote
 finish-args:
+  - --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
   - --env=GTK_PATH=/app/lib/gtkmodules
   - --socket=wayland
   - --socket=fallback-x11
